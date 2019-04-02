@@ -1,3 +1,7 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -9,6 +13,14 @@ body {
     background: #2F3F49;
     color: #F4E1E1;
     /*color: #EBF5EE;*/
+    /*BFA89E*/
+    /*8B786D*/
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .App {
@@ -19,13 +31,75 @@ body {
     background-color: #283044;
     height: 20vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     font-size: calc(10px + 2vmin);
+    /*color: white;*/
+}
+
+.votingImg {
+    width: 200px;
+    height: auto;
+    border-radius: 20px;
+}
+
+@media screen and (max-width: 750px) {
+    .votingImg {
+        display: none;
+    }
+}
+
+.authenticationLinks {
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/*.clickableText {*/
+    /**/
+/*}*/
+
+.clickableText:hover {
+    text-decoration: underline;
     color: white;
+    cursor: pointer;
 }
 
 #mainTitle {
 
+}
+
+.widget {
+    background: #EBF5EE;
+    color: black;
+    height: 70vh;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0 0 20px;
+    transform: scale(0);
+    min-width: 300px;
+}
+
+.closeWidgetBtn {
+    display: flex;
+    justify-content: right;
+}
+
+.innerX {
+    width: 20px;
+    margin: 0;
+    padding: 0;
+    background: #283044;
+    color: white;
+    cursor: pointer;
+}
+
+@keyframes appear {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
