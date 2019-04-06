@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 
 class PollMenu extends Component {
-    constructor(props) {
-        super(props);
-
-    }
+    // constructor(props) {
+    //     super(props);
+    //
+    // }
 
     render() {
         const widgetStyle = {
@@ -14,6 +14,9 @@ class PollMenu extends Component {
         };
         return (
             <div className={"widget"} style={widgetStyle}>
+                <div onClick={this.props.close} className={"closeWidgetBtn"}>
+                    <p className={"innerX"}>X</p>
+                </div>
                 <h2>Poll Menu</h2>
             </div>
         );

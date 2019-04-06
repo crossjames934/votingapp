@@ -23,6 +23,15 @@ main {
     justify-content: center;
 }
 
+input {
+    width: 70%;
+    font-size: 20px;
+}
+
+input[type=submit] {
+    font-size: 135px;
+}
+
 .App {
     text-align: center;
 }
@@ -61,7 +70,7 @@ main {
 
 .clickableText:hover {
     text-decoration: underline;
-    color: white;
+    color: gold;
     cursor: pointer;
 }
 
@@ -77,21 +86,35 @@ main {
     padding: 20px;
     margin: 20px 0 0 20px;
     transform: scale(0);
-    min-width: 300px;
+    min-width: 350px;
+    -webkit-box-shadow: 0 0 15px 3px black;
+    -moz-box-shadow: 0 0 15px 3px black;
+    box-shadow: 0 0 15px 3px black;
+    overflow-y: scroll;
 }
 
 .closeWidgetBtn {
-    display: flex;
-    justify-content: right;
+    padding: 0 0 0 90%;
 }
 
 .innerX {
-    width: 20px;
+    width: 30px;
+    height: 30px;
     margin: 0;
     padding: 0;
     background: #283044;
+    border-radius: 50%;
     color: white;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.2;
+}
+
+.innerX:hover {
+    opacity: 1;
+    color: gold;
 }
 
 @keyframes appear {

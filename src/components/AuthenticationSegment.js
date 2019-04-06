@@ -1,20 +1,20 @@
 import React, {Component} from 'react';
 
 class AuthenticationSegment extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            showRegister: false,
-            showLogin: false
-        };
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         showRegister: false,
+    //         showLogin: false
+    //     };
+    // }
 
     notAuthenticated() {
         return(
             <div className="authenticationLinks">
-                <p className="clickableText">Register</p>
+                <p className="clickableText" onClick={this.props.showRegister}>Register</p>
                 <p> || </p>
-                <p className="clickableText">Log In</p>
+                <p className="clickableText" onClick={this.props.showLogin}>Log In</p>
             </div>
         );
     }
@@ -23,6 +23,7 @@ class AuthenticationSegment extends Component {
         return(
             <div>
                 <p>Welcome {this.props.username}</p>
+                <p className="clickableText">Sign Out</p>
             </div>
         );
     }
