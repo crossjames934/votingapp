@@ -13,7 +13,7 @@ body {
     background: #2F3F49;
     color: #F4E1E1;
     /*color: #EBF5EE;*/
-    /*BFA89E*/
+    /*color: #BFA89E;*/
     /*8B786D*/
 }
 
@@ -28,8 +28,23 @@ input {
     font-size: 20px;
 }
 
-input[type=submit] {
-    font-size: 135px;
+.submitBtn {
+    background: #2F3F49;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    width: 180px;
+    border: 3px #8B786D outset;
+}
+
+.submitBtn:hover {
+    color: gold;
+    text-decoration: underline;
+}
+
+.submitBtn:active {
+    border: 3px #8B786D inset;
+    padding: 11px 10px 9px 10px;
 }
 
 .App {
@@ -64,18 +79,10 @@ input[type=submit] {
     justify-content: space-between;
 }
 
-/*.clickableText {*/
-    /**/
-/*}*/
-
 .clickableText:hover {
     text-decoration: underline;
     color: gold;
     cursor: pointer;
-}
-
-#mainTitle {
-
 }
 
 .widget {

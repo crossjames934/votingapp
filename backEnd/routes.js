@@ -1,5 +1,4 @@
-const path = require('path');
-const bodyParser = require('body-parser');
+// const path = require('path');
 
 module.exports = app => {
     app.get('/ping', (req, res) => {
@@ -16,12 +15,8 @@ module.exports = app => {
         return res.send(ipAddress);
     });
 
-    app.get('/*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'build', 'index.html'));
-    });
-
     app.post('/register', (req, res) => {
         console.log(req.body);
-        res.send(req.body);
+        res.json(req.body);
     });
 };

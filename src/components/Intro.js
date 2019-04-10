@@ -15,12 +15,12 @@ class Intro extends Component {
         // const xStyle = {width: 20};
         return (
             <div className={"widget"} style={widgetStyle}>
-                <div onClick={this.props.close} className={"closeWidgetBtn"}>
-                    <p className={"innerX"}>X</p>
+                <div className={"closeWidgetBtn"}>
+                    <p onClick={this.props.close} className={"innerX"}>X</p>
                 </div>
                 <h2>Welcome to Cross Voting</h2>
                 <p>Here you can make your own polls, and have your friends vote on them.</p>
-                <p>You need to register if you want to create your own polls, but you can vote on other polls without an account.</p>
+                <p>You can do all this without making an account, but if you want to make lots of polls will need to register.</p>
                 <p>Registering is super easy, you can do it with a couple clicks if you use your Facebook or Google account.</p>
                 <p>You can also register using traditional means too.</p>
             </div>

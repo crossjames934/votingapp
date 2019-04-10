@@ -6,7 +6,8 @@ class Register extends Component {
         super(props);
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            email: ""
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -17,12 +18,20 @@ class Register extends Component {
     }
 
     handleSubmit(e) {
-        axios.post('/register', {
-            username: this.state.username,
-            password: this.state.password
-        })
-            .then(res => {
-                console.log(res);
+        const { username, password, email } = this.state;
+        axios.post('/register', {username, password, email})
+            .then((response) => {
+                //handle success
+                if (response.status !== 200) {
+                    alert("There was a problem connecting to the server, see console for more information");
+                    return console.log(response);
+                }
+                console.log(response.data);
+            })
+            .catch((response) => {
+                //handle error
+                alert("There was a problem connecting to the server, see console for more information");
+                return console.log(response);
             });
         e.preventDefault();
     }
@@ -41,11 +50,11 @@ class Register extends Component {
         };
         return (
             <div className={"widget"} style={widgetStyle}>
-                <div onClick={this.props.close} className={"closeWidgetBtn"}>
-                    <p className={"innerX"}>X</p>
+                <div className={"closeWidgetBtn"}>
+                    <p onClick={this.props.close} className={"innerX"}>X</p>
                 </div>
                 <h2>Register</h2>
-                <form action="/register" method="POST" onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit}>
                     <div style={spaceAround}>
                         <p>Username:</p>
                         <input
@@ -68,7 +77,18 @@ class Register extends Component {
                             required
                         />
                     </div>
-                    <input type="submit" value="Submit"/>
+                    <div style={spaceAround}>
+                        <p>Email:</p>
+                        <input
+                            onChange={this.handleChange}
+                            name="email"
+                            type="email"
+                            id="registeringEmail"
+                            value={this.state.email}
+                            required
+                        />
+                    </div>
+                    <input className={"submitBtn"} type="submit" value="Submit"/>
                 </form>
             </div>
         );
