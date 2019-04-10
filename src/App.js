@@ -8,6 +8,7 @@ import AuthenticationSegment from './components/AuthenticationSegment';
 import Intro from './components/Intro';
 import PollMenu from './components/PollMenu';
 import Register from './components/Register';
+import Login from './components/Login';
 
 // Global variables for string-references of widgets, for consistency and efficiency in development
 const INTRO = "intro";
@@ -69,6 +70,11 @@ class App extends Component {
                         order={orderOf(REGISTER)}
                         showing={showing(REGISTER)}
                         close={() => {this.closeWidget(REGISTER)}}
+                    />
+                    <Login
+                        order={orderOf(LOGIN)}
+                        showing={showing(LOGIN)}
+                        close={() => {this.closeWidget(LOGIN)}}
                     />
                 </main>
             </div>

@@ -15,8 +15,8 @@ class Register extends Component {
         };
         return (
             <div className={"widget"} style={widgetStyle}>
-                <div onClick={this.props.close} className={"closeWidgetBtn"}>
-                    <p className={"innerX"}>X</p>
+                <div className={"closeWidgetBtn"}>
+                    <p onClick={this.props.close} className={"innerX"}>X</p>
                 </div>
             </div>
         );

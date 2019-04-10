@@ -5,10 +5,12 @@
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "crypto": "^1.0.1",
     "express": "^4.16.4",
     "express-favicon": "^2.0.1",
     "mongodb": "^3.2.3",
     "mongoose": "^5.4.22",
+    "nodemailer": "^6.1.0",
     "passport-facebook": "^3.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

@@ -97,7 +97,7 @@ input {
     -webkit-box-shadow: 0 0 15px 3px black;
     -moz-box-shadow: 0 0 15px 3px black;
     box-shadow: 0 0 15px 3px black;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
 }
 
 .closeWidgetBtn {

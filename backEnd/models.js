@@ -14,7 +14,13 @@ const pollSchema = new mongoose.Schema({
     votes: Array
 });
 
+const tokenSchema = new mongoose.Schema({
+    userId: String,
+    token: String
+});
+
 module.exports = {
-    User: mongoose.model('User', userSchema),
-    Poll: mongoose.model('Poll', pollSchema)
+    User: mongoose.model('User', userSchema, 'users'),
+    Poll: mongoose.model('Poll', pollSchema, 'polls'),
+    Token: mongoose.model('Token', tokenSchema, 'tokens')
 };
