@@ -6,6 +6,7 @@ import VotingImg from './images/voting.jpg';
 
 // My Modules
 import AuthenticationSegment from './components/AuthenticationSegment';
+import MainMenu from './components/MainMenu';
 import Intro from './components/Intro';
 import PollMenu from './components/PollMenu';
 import Register from './components/Register';
@@ -13,6 +14,7 @@ import Login from './components/Login';
 
 // Global variables for string-references of widgets, for consistency and efficiency in development
 const INTRO = "intro";
+const MAINMENU = "mainMenu";
 const POLLMENU = "pollMenu";
 const REGISTER = "register";
 const LOGIN = "login";
@@ -27,6 +29,7 @@ class App extends Component {
         };
         this.closeWidget = this.closeWidget.bind(this);
         this.showWidget = this.showWidget.bind(this);
+        this.updateAuthenticationStatus = this.updateAuthenticationStatus.bind(this);
     }
 
     componentDidMount() {
@@ -39,6 +42,10 @@ class App extends Component {
             .catch(e => {
                 console.log(e);
             });
+    }
+
+    updateAuthenticationStatus(authenticated, username) {
+        this.setState({authenticated, username});
     }
 
     closeWidget(widgetName) {
@@ -60,16 +67,23 @@ class App extends Component {
             <div className="App">
                 <header className="App-header">
                     {/*<img className={"votingImg"} src={VotingImg} alt={"someone voting"}/>*/}
-                    <p className={"hamburgerIcon"}>&#9776;</p>
+                    <p className={"hamburgerIcon"} onClick={() => { this.showWidget(MAINMENU) }}>&#9776;</p>
                     <h1 id={"mainTitle"}>Voting App</h1>
                     <AuthenticationSegment
                         authenticated={this.state.authenticated}
                         username={this.state.username}
                         showRegister={() => this.showWidget(REGISTER)}
                         showLogin={() => this.showWidget(LOGIN)}
+                        updateAuthenticationStatus={this.updateAuthenticationStatus}
                     />
                 </header>
                 <main>
+                    <MainMenu
+                        widgets={[INTRO, POLLMENU, REGISTER, LOGIN]}
+                        order={orderOf(MAINMENU)}
+                        showing={showing(MAINMENU)}
+                        close={() => {this.closeWidget(MAINMENU)}}
+                    />
                     <Intro
                         order={orderOf(INTRO)}
                         showing={showing(INTRO)}
@@ -89,6 +103,7 @@ class App extends Component {
                         order={orderOf(LOGIN)}
                         showing={showing(LOGIN)}
                         close={() => {this.closeWidget(LOGIN)}}
+                        updateAuthenticationStatus={this.updateAuthenticationStatus}
                     />
                 </main>
             </div>

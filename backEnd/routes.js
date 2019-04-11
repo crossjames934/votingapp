@@ -28,6 +28,12 @@ module.exports = app => {
         return res.send(req.user.username);
     });
 
+    // Logout
+    app.get('/logout', (req, res) => {
+        req.logout();
+        res.send('logged out');
+    });
+
     // Confirmation of email address through token
     app.get('/confirmation/:token', async (req, res) => {
         try {

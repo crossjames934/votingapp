@@ -1,6 +1,19 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 
 class AuthenticationSegment extends Component {
+    logout = () => {
+        axios.get('/logout')
+            .then(res => {
+                console.log(res.data);
+                this.props.updateAuthenticationStatus(false, "");
+            })
+            .catch(e => {
+                alert("There was an error connecting, please check console for the error");
+                console.log(e);
+            });
+    };
+
     notAuthenticated() {
         return(
             <div className="authenticationLinks">
@@ -15,7 +28,7 @@ class AuthenticationSegment extends Component {
         return(
             <div>
                 <p>Welcome {this.props.username}</p>
-                <p className="clickableText">Sign Out</p>
+                <p className="clickableText" onClick={this.logout}>Sign Out</p>
             </div>
         );
     }

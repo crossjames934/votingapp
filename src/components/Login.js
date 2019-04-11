@@ -7,6 +7,8 @@ class Login extends Component {
         this.state = {
             username: "",
             password: "",
+            success: false,
+            failedMessage: ""
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,7 +27,15 @@ class Login extends Component {
                     alert("There was a problem after connecting to the server, see console for more information");
                     return console.log(response);
                 }
-                console.log(response.data);
+                if (response.data.loggedIn) {
+                    // update log in status of parent
+                    this.props.updateAuthenticationStatus(true, response.data.message);
+                    this.setState({success: true, failedMessage: ""});
+                    // close widget after 2 seconds
+                    setTimeout(this.props.close, 2000);
+                } else {
+                    this.setState({failedMessage: response.data.message});
+                }
             })
             .catch((response) => {
                 //handle error
@@ -35,24 +45,22 @@ class Login extends Component {
         e.preventDefault();
     }
 
-    render() {
-        const widgetStyle = {
-            order: this.props.order,
-            display: (this.props.showing ? "block" : "none"),
-            width: "30vw",
-            animation: `appear 1s ease-out ${this.props.order*100}ms forwards`
-        };
+    successfulLogin() {
+        return(
+            <div>
+                <p>You have logged in successfully!</p>
+            </div>
+        );
+    }
+
+    loginForm() {
         const spaceAround = {
             display: "flex",
             justifyContent: "space-between",
             margin: '10px 0'
         };
-        return (
-            <div className={"widget"} style={widgetStyle}>
-                <div className={"closeWidgetBtn"}>
-                    <p onClick={this.props.close} className={"innerX"}>X</p>
-                </div>
-                <h2>Login</h2>
+        return(
+            <div>
                 <form onSubmit={this.handleSubmit}>
                     <div style={spaceAround}>
                         <p>Username:</p>
@@ -78,6 +86,25 @@ class Login extends Component {
                     </div>
                     <input className={"submitBtn"} type="submit" value="Submit"/>
                 </form>
+            </div>
+        );
+    }
+
+    render() {
+        const widgetStyle = {
+            order: this.props.order,
+            display: (this.props.showing ? "block" : "none"),
+            width: "30vw",
+            animation: `appear 1s ease-out ${this.props.order*100}ms forwards`
+        };
+        return (
+            <div className={"widget"} style={widgetStyle}>
+                <div className={"closeWidgetBtn"}>
+                    <p onClick={this.props.close} className={"innerX"}>X</p>
+                </div>
+                <h2>Login</h2>
+                {this.state.success ? this.successfulLogin() : this.loginForm()}
+                <p className={"red"}>{this.state.failedMessage}</p>
             </div>
         );
     }
