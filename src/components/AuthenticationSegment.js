@@ -1,14 +1,6 @@
 import React, {Component} from 'react';
 
 class AuthenticationSegment extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         showRegister: false,
-    //         showLogin: false
-    //     };
-    // }
-
     notAuthenticated() {
         return(
             <div className="authenticationLinks">

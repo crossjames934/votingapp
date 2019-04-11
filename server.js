@@ -9,7 +9,8 @@ const app = express();
 
 // My Modules
 const routes = require('./backEnd/routes');
-const models = require('./backEnd/models');
+// const models = require('./backEnd/models');
+const passportSetup = require('./backEnd/passportSetup');
 
 // Connect to Database
 mongoose.connect(process.env.DB);
@@ -23,6 +24,9 @@ app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Passport Setup
+passportSetup(app);
 
 // Routes
 routes(app);

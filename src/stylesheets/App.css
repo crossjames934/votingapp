@@ -61,9 +61,9 @@ input {
     /*color: white;*/
 }
 
-.votingImg {
+.hamburgerIcon {
     width: 200px;
-    height: auto;
+    font-size: 30px;
     border-radius: 20px;
 }
 

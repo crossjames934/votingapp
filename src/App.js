@@ -1,5 +1,6 @@
 // Dependencies
 import React, { Component } from 'react';
+import axios from 'axios';
 import './stylesheets/App.css';
 import VotingImg from './images/voting.jpg';
 
@@ -28,6 +29,18 @@ class App extends Component {
         this.showWidget = this.showWidget.bind(this);
     }
 
+    componentDidMount() {
+        axios.get('/whoami')
+            .then(res => {
+                if (res.data) {
+                    this.setState({authenticated: true, username: res.data});
+                }
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+
     closeWidget(widgetName) {
         this.setState({visibleWidgets: this.state.visibleWidgets.filter(widget => widget !== widgetName)});
     }
@@ -46,7 +59,8 @@ class App extends Component {
         return (
             <div className="App">
                 <header className="App-header">
-                    <img className={"votingImg"} src={VotingImg} alt={"someone voting"}/>
+                    {/*<img className={"votingImg"} src={VotingImg} alt={"someone voting"}/>*/}
+                    <p className={"hamburgerIcon"}>&#9776;</p>
                     <h1 id={"mainTitle"}>Voting App</h1>
                     <AuthenticationSegment
                         authenticated={this.state.authenticated}

@@ -22,7 +22,7 @@ class Login extends Component {
             .then((response) => {
                 //handle success
                 if (response.status !== 200) {
-                    alert("There was a problem connecting to the server, see console for more information");
+                    alert("There was a problem after connecting to the server, see console for more information");
                     return console.log(response);
                 }
                 console.log(response.data);
