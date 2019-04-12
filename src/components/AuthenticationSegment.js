@@ -6,7 +6,12 @@ class AuthenticationSegment extends Component {
         axios.get('/logout')
             .then(res => {
                 console.log(res.data);
-                this.props.updateAuthenticationStatus(false, "");
+                // this.props.updateAuthenticationStatus(false, "");
+                this.props.updateParentState({
+                    authenticated: false,
+                    username: "",
+                    attemptedLogin: false
+                });
             })
             .catch(e => {
                 alert("There was an error connecting, please check console for the error");

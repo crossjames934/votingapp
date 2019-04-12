@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
     username: String,
@@ -7,12 +6,6 @@ const userSchema = new mongoose.Schema({
     email: String,
     isVerified: Boolean
 });
-
-// userSchema.methods.validPassword = async (pwd, user) => {
-//     const result = await bcrypt.compare(pwd, user.password);
-//     console.log(result);
-//     return result;
-// };
 
 const pollSchema = new mongoose.Schema({
     author: String,

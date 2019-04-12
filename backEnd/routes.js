@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const sgMail = require('@sendgrid/mail');
 const passport = require('passport');
+const path = require('path');
 
 const models = require('./models');
 
@@ -37,7 +38,15 @@ module.exports = app => {
     // Confirmation of email address through token
     app.get('/confirmation/:token', async (req, res) => {
         try {
-            res.send(req.params.token);
+            const content = `<br><p>Click <a href='https://${req.headers.host}'>here</a> to go to homepage.</p>`;
+            const errorMessage = "<p>Sorry, the token doesn't match any of our users</p>" + content;
+            const tokenObject = await models.Token.findOne({token: req.params.token});
+            if (!tokenObject) return res.send(errorMessage);
+            const user = await models.User.findOne({_id: tokenObject.userId});
+            if (!user) return res.send(errorMessage);
+            user.isVerified = true;
+            await user.save();
+            res.send('<p>User successfully verified!</p>' + content);
         } catch (e) {
             res.send(e);
         }
@@ -63,7 +72,8 @@ module.exports = app => {
             const newUser = new models.User({
                 username,
                 password: hash,
-                email
+                email,
+                isVerified: false
             });
             const user = await newUser.save();
             // Create new token
@@ -98,17 +108,4 @@ module.exports = app => {
         (req, res) => {
             res.json({loggedIn: true, message: req.user.username});
         });
-
-    // app.post('/login', async (req, res) => {
-    //     try {
-    //         // const {username, password} = req.body;
-    //         // const user = await models.User.findOne({username: username});
-    //         // if (!user) return res.send('User not found');
-    //         // const passwordMatch = await bcrypt.compare(password, user.password);
-    //         // if (!passwordMatch) return res.send('Wrong password');
-    //         // return res.send(passwordMatch);
-    //     } catch (e) {
-    //         res.send(e);
-    //     }
-    // });
 };

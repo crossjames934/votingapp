@@ -31,7 +31,11 @@ module.exports = app => {
         done(null, user);
     });
 
-    app.use(session({secret: process.env.SECRET, resave: false}));
+    app.use(session({
+        secret: process.env.SECRET,
+        resave: false,
+        saveUninitialized: false
+    }));
     app.use(passport.initialize());
     app.use(passport.session());
 };

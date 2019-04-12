@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './stylesheets/App.css';
-import VotingImg from './images/voting.jpg';
+// import VotingImg from './images/voting.jpg';
 
 // My Modules
 import AuthenticationSegment from './components/AuthenticationSegment';
@@ -13,11 +13,11 @@ import Register from './components/Register';
 import Login from './components/Login';
 
 // Global variables for string-references of widgets, for consistency and efficiency in development
-const INTRO = "intro";
-const MAINMENU = "mainMenu";
-const POLLMENU = "pollMenu";
-const REGISTER = "register";
-const LOGIN = "login";
+const INTRO = "Intro";
+const MAINMENU = "Main Menu";
+const POLLMENU = "Poll Menu";
+const REGISTER = "Register";
+const LOGIN = "Login";
 
 class App extends Component {
     constructor(props) {
@@ -25,14 +25,17 @@ class App extends Component {
         this.state = {
             authenticated: false,
             username: "",
-            visibleWidgets: [INTRO, POLLMENU]
+            visibleWidgets: [INTRO, POLLMENU],
+            attemptedLogin: false
         };
         this.closeWidget = this.closeWidget.bind(this);
         this.showWidget = this.showWidget.bind(this);
-        this.updateAuthenticationStatus = this.updateAuthenticationStatus.bind(this);
+        this.updateParentState = this.updateParentState.bind(this);
+        this.bringMenuToFront = this.bringMenuToFront.bind(this);
     }
 
     componentDidMount() {
+        // Check if user is already logged in to display components accordingly (i.e. Welcome message)
         axios.get('/whoami')
             .then(res => {
                 if (res.data) {
@@ -44,8 +47,8 @@ class App extends Component {
             });
     }
 
-    updateAuthenticationStatus(authenticated, username) {
-        this.setState({authenticated, username});
+    updateParentState(stateObject) {
+        this.setState(stateObject);
     }
 
     closeWidget(widgetName) {
@@ -53,7 +56,16 @@ class App extends Component {
     }
 
     showWidget(widgetName) {
-        this.setState({visibleWidgets: [widgetName, ...this.state.visibleWidgets]});
+        const containsMenu = this.state.visibleWidgets.includes(MAINMENU);
+        const otherWidgets = this.state.visibleWidgets.filter(widget => widget !== MAINMENU);
+        const updateArray = [widgetName, ...otherWidgets];
+        if (containsMenu) updateArray.unshift(MAINMENU);
+        this.setState({visibleWidgets: updateArray});
+    }
+
+    bringMenuToFront() {
+        const otherWidgets = this.state.visibleWidgets.filter(widget => widget !== MAINMENU);
+        this.setState({visibleWidgets: [MAINMENU, ...otherWidgets]});
     }
 
     render() {
@@ -66,7 +78,6 @@ class App extends Component {
         return (
             <div className="App">
                 <header className="App-header">
-                    {/*<img className={"votingImg"} src={VotingImg} alt={"someone voting"}/>*/}
                     <p className={"hamburgerIcon"} onClick={() => { this.showWidget(MAINMENU) }}>&#9776;</p>
                     <h1 id={"mainTitle"}>Voting App</h1>
                     <AuthenticationSegment
@@ -74,7 +85,7 @@ class App extends Component {
                         username={this.state.username}
                         showRegister={() => this.showWidget(REGISTER)}
                         showLogin={() => this.showWidget(LOGIN)}
-                        updateAuthenticationStatus={this.updateAuthenticationStatus}
+                        updateParentState={this.updateParentState}
                     />
                 </header>
                 <main>
@@ -83,6 +94,11 @@ class App extends Component {
                         order={orderOf(MAINMENU)}
                         showing={showing(MAINMENU)}
                         close={() => {this.closeWidget(MAINMENU)}}
+                        visibleWidgets={this.state.visibleWidgets}
+                        showWidget={this.showWidget}
+                        closeWidget={this.closeWidget}
+                        bringMenuToFront={this.bringMenuToFront}
+                        authenticated={this.state.authenticated}
                     />
                     <Intro
                         order={orderOf(INTRO)}
@@ -103,8 +119,11 @@ class App extends Component {
                         order={orderOf(LOGIN)}
                         showing={showing(LOGIN)}
                         close={() => {this.closeWidget(LOGIN)}}
-                        updateAuthenticationStatus={this.updateAuthenticationStatus}
+                        authenticated={this.state.authenticated}
+                        attemptedLogin={this.state.attemptedLogin}
+                        updateParentState={this.updateParentState}
                     />
+                    <p onClick={() => { this.showWidget(MAINMENU) }}>{this.state.visibleWidgets.length === 0 ? "Click here or ☰ for the menu" : ""}</p>
                 </main>
             </div>
         );

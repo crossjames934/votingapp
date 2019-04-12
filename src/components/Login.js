@@ -7,7 +7,6 @@ class Login extends Component {
         this.state = {
             username: "",
             password: "",
-            success: false,
             failedMessage: ""
         };
         this.handleChange = this.handleChange.bind(this);
@@ -19,6 +18,8 @@ class Login extends Component {
     }
 
     handleSubmit(e) {
+        this.props.updateParentState({attemptedLogin: true});
+        this.setState({failedMessage: ""});
         const { username, password } = this.state;
         axios.post('/login', {username, password})
             .then((response) => {
@@ -29,26 +30,38 @@ class Login extends Component {
                 }
                 if (response.data.loggedIn) {
                     // update log in status of parent
-                    this.props.updateAuthenticationStatus(true, response.data.message);
-                    this.setState({success: true, failedMessage: ""});
+                    this.props.updateParentState({
+                        authenticated: true,
+                        username: response.data.message
+                    });
+                    // Must clear fields for cyber-security!
+                    this.setState({
+                        username: "",
+                        password: ""
+                    });
                     // close widget after 2 seconds
                     setTimeout(this.props.close, 2000);
                 } else {
                     this.setState({failedMessage: response.data.message});
+                    this.props.updateParentState({attemptedLogin: false});
                 }
             })
             .catch((response) => {
                 //handle error
-                alert("There was a problem connecting to the server, see console for more information");
-                return console.log(response);
+                console.log(response);
+                this.setState({
+                    failedMessage: "Trouble connecting to server. Potentially from loss of internet connection. See console for more details"
+                });
+                this.props.updateParentState({attemptedLogin: false});
             });
         e.preventDefault();
     }
 
-    successfulLogin() {
+    attemptedLogin() {
+        const message = this.props.authenticated ? "You have logged in successfully!" : "Please wait...";
         return(
             <div>
-                <p>You have logged in successfully!</p>
+                <p>{message}</p>
             </div>
         );
     }
@@ -103,7 +116,7 @@ class Login extends Component {
                     <p onClick={this.props.close} className={"innerX"}>X</p>
                 </div>
                 <h2>Login</h2>
-                {this.state.success ? this.successfulLogin() : this.loginForm()}
+                {this.props.attemptedLogin ? this.attemptedLogin() : this.loginForm()}
                 <p className={"red"}>{this.state.failedMessage}</p>
             </div>
         );
