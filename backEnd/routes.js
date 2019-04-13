@@ -108,4 +108,16 @@ module.exports = app => {
         (req, res) => {
             res.json({loggedIn: true, message: req.user.username});
         });
+
+    // New Poll
+    app.post('/poll', async (req, res) => {
+        try {
+            const {question, choices, author} = req.body;
+            const newPoll = new models.Poll({question, choices, author, votes: []});
+            await newPoll.save();
+            res.send('poll msg posted');
+        } catch (e) {
+            res.send(e);
+        }
+    });
 };

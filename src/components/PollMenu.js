@@ -1,23 +1,16 @@
 import React, {Component} from 'react';
 
-class PollMenu extends Component {
-    // constructor(props) {
-    //     super(props);
-    //
-    // }
+import CloseWidgetBtn from './CloseWidgetBtn';
+import widgetStyle from './widgetStyle';
 
+class PollMenu extends Component {
     render() {
-        const widgetStyle = {
-            order: this.props.order,
-            display: (this.props.showing ? "block" : "none"),
-            animation: `appear 1s ease-out ${this.props.order*200}ms forwards`
-        };
         return (
-            <div className={"widget"} style={widgetStyle}>
-                <div className={"closeWidgetBtn"}>
-                    <p onClick={this.props.close} className={"innerX"}>X</p>
+            <div id={this.props.id} className={"widget"} style={widgetStyle(this.props.order, this.props.showing)}>
+                <div className="scrollable">
+                    <CloseWidgetBtn close={this.props.close}/>
+                    <h2>Poll Menu</h2>
                 </div>
-                <h2>Poll Menu</h2>
             </div>
         );
     }

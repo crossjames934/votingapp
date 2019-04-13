@@ -70,6 +70,22 @@ class App extends Component {
         this.setState({visibleWidgets: [MAIN_MENU, ...otherWidgets]});
     }
 
+    // componentDidUpdate() {
+    //     const widgets = document.getElementsByClassName('widget');
+    //     for (let i = 0; i < widgets.length; i++) {
+    //         const el = widgets[i];
+    //         const curOverflow = el.style.overflow;
+    //
+    //         if ( !curOverflow || curOverflow === "visible" )
+    //             el.style.overflow = "hidden";
+    //
+    //         let isOverflowing = el.clientWidth < el.scrollWidth
+    //             || el.clientHeight < el.scrollHeight;
+    //
+    //         el.style.overflowY = isOverflowing ? "scroll" : "hidden";
+    //     }
+    // }
+
     render() {
         // Everything in <main> is divided into 'widgets'
         // Each widget displays according to a particular order, if at all
@@ -101,26 +117,33 @@ class App extends Component {
                         closeWidget={this.closeWidget}
                         bringMenuToFront={this.bringMenuToFront}
                         authenticated={this.state.authenticated}
+                        id={MAIN_MENU.replace(/\s/g, "")}
                     />
                     <Intro
                         order={orderOf(INTRO)}
                         showing={showing(INTRO)}
                         close={() => {this.closeWidget(INTRO)}}
+                        id={INTRO.replace(/\s/g, "")}
                     />
                     <PollMenu
                         order={orderOf(POLL_MENU)}
                         showing={showing(POLL_MENU)}
                         close={() => {this.closeWidget(POLL_MENU)}}
+                        id={POLL_MENU.replace(/\s/g, "")}
                     />
                     <CreateNewPoll
                         order={orderOf(CREATE_NEW_POLL)}
                         showing={showing(CREATE_NEW_POLL)}
                         close={() => {this.closeWidget(CREATE_NEW_POLL)}}
+                        authenticated={this.state.authenticated}
+                        username={this.state.username}
+                        id={CREATE_NEW_POLL.replace(/\s/g, "")}
                     />
                     <Register
                         order={orderOf(REGISTER)}
                         showing={showing(REGISTER)}
                         close={() => {this.closeWidget(REGISTER)}}
+                        id={REGISTER.replace(/\s/g, "")}
                     />
                     <Login
                         order={orderOf(LOGIN)}
@@ -129,6 +152,7 @@ class App extends Component {
                         authenticated={this.state.authenticated}
                         attemptedLogin={this.state.attemptedLogin}
                         updateParentState={this.updateParentState}
+                        id={LOGIN.replace(/\s/g, "")}
                     />
                     <p className={"noWidgetMsg"} onClick={() => { this.showWidget(MAIN_MENU) }}>
                         {this.state.visibleWidgets.length === 0 ? "Click here or ☰ for the menu" : ""}

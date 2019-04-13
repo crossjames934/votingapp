@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import axios from "axios";
 
+import CloseWidgetBtn from './CloseWidgetBtn';
+import widgetStyle from './widgetStyle';
+
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -9,7 +12,7 @@ class Login extends Component {
             password: "",
             failedMessage: ""
         };
-        this.loginTimeout = null;
+        // this.loginTimeout = null;
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -71,15 +74,10 @@ class Login extends Component {
     }
 
     loginForm() {
-        const spaceAround = {
-            display: "flex",
-            justifyContent: "space-between",
-            margin: '10px 0'
-        };
         return(
             <div>
                 <form onSubmit={this.handleSubmit}>
-                    <div style={spaceAround}>
+                    <div className="spaceAround">
                         <p>Username:</p>
                         <input
                             onChange={this.handleChange}
@@ -90,7 +88,7 @@ class Login extends Component {
                             required
                         />
                     </div>
-                    <div style={spaceAround}>
+                    <div className="spaceAround">
                         <p>Password:</p>
                         <input
                             onChange={this.handleChange}
@@ -108,20 +106,14 @@ class Login extends Component {
     }
 
     render() {
-        const widgetStyle = {
-            order: this.props.order,
-            display: (this.props.showing ? "block" : "none"),
-            width: "30vw",
-            animation: `appear 1s ease-out ${this.props.order*100}ms forwards`
-        };
         return (
-            <div className={"widget"} style={widgetStyle}>
-                <div className={"closeWidgetBtn"}>
-                    <p onClick={this.props.close} className={"innerX"}>X</p>
+            <div id={this.props.id} className={"widget"} style={widgetStyle(this.props.order, this.props.showing)}>
+                <div className="scrollable">
+                    <CloseWidgetBtn close={this.props.close}/>
+                    <h2>Login</h2>
+                    {this.props.attemptedLogin ? this.attemptedLogin() : this.loginForm()}
+                    <p className={"red"}>{this.state.failedMessage}</p>
                 </div>
-                <h2>Login</h2>
-                {this.props.attemptedLogin ? this.attemptedLogin() : this.loginForm()}
-                <p className={"red"}>{this.state.failedMessage}</p>
             </div>
         );
     }

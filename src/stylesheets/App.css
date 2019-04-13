@@ -28,6 +28,13 @@ input {
     font-size: 20px;
 }
 
+.scrollable {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 .submitBtn {
     background: #2F3F49;
     color: white;
@@ -35,6 +42,7 @@ input {
     cursor: pointer;
     width: 180px;
     border: 3px #8B786D outset;
+    border-radius: 5px;
 }
 
 .submitBtn:hover {
@@ -42,9 +50,25 @@ input {
     text-decoration: underline;
 }
 
-.submitBtn:active {
+.addNewChoiceBtn {
+    font-size: 18px;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    background: #444;
+    color: white;
+    cursor: pointer;
+    border: 3px #8B786D outset;
+}
+
+.addNewChoiceBtn:hover {
+    color: gold;
+    text-decoration: underline;
+}
+
+.submitBtn:active, .addNewChoiceBtn:active {
     border: 3px #8B786D inset;
-    padding: 11px 10px 9px 10px;
+    padding: 11px 9px 9px 11px;
 }
 
 .App {
@@ -109,6 +133,13 @@ input {
     -moz-box-shadow: 0 0 15px 3px black;
     box-shadow: 0 0 15px 3px black;
     /*overflow-y: scroll;*/
+}
+
+.spaceAround {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
 }
 
 .closeWidgetBtn {
