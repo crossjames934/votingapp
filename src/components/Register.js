@@ -94,6 +94,7 @@ class Register extends Component {
                     />
                 </div>
                 <input className={"submitBtn"} type="submit" value="Submit"/>
+                <p className={"red"}>{this.state.errorMessage}</p>
             </form>
         );
     }

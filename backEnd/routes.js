@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const sgMail = require('@sendgrid/mail');
 const passport = require('passport');
-const path = require('path');
+// const path = require('path');
 
 const models = require('./models');
 
@@ -38,7 +38,7 @@ module.exports = app => {
     // Confirmation of email address through token
     app.get('/confirmation/:token', async (req, res) => {
         try {
-            const content = `<br><p>Click <a href='https://${req.headers.host}'>here</a> to go to homepage.</p>`;
+            const content = `<br><p>Click <a href='https://crossvoting.herokuapp.com'>here</a> to go to homepage.</p>`;
             const errorMessage = "<p>Sorry, the token doesn't match any of our users</p>" + content;
             const tokenObject = await models.Token.findOne({token: req.params.token});
             if (!tokenObject) return res.send(errorMessage);
@@ -90,9 +90,7 @@ module.exports = app => {
                 subject: 'Account Verification',
                 text: 'Hello James \n\n ' +
                     'To activate your account please verify your email address by clicking the link below \n\n' +
-                    'https://' +
-                    req.headers.host +
-                    '/confirmation/' +
+                    'https://crossvoting.herokuapp.com/confirmation/' +
                     token.token
             };
             sgMail.send(mail);
