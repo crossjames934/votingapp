@@ -10,6 +10,7 @@ import MainMenu from './components/MainMenu';
 import Intro from './components/Intro';
 import PollMenu from './components/PollMenu';
 import CreateNewPoll from './components/CreateNewPoll';
+import ShowPoll from './components/ShowPoll';
 import Register from './components/Register';
 import Login from './components/Login';
 
@@ -20,6 +21,7 @@ const POLL_MENU = "Poll Menu";
 const REGISTER = "Register";
 const LOGIN = "Login";
 const CREATE_NEW_POLL = "Create New Poll";
+const SHOW_POLL = "Show Poll";
 
 class App extends Component {
     constructor(props) {
@@ -28,7 +30,8 @@ class App extends Component {
             authenticated: false,
             username: "",
             visibleWidgets: [INTRO, POLL_MENU],
-            attemptedLogin: false
+            attemptedLogin: false,
+            showingPollId: ""
         };
         this.closeWidget = this.closeWidget.bind(this);
         this.showWidget = this.showWidget.bind(this);
@@ -129,6 +132,8 @@ class App extends Component {
                         order={orderOf(POLL_MENU)}
                         showing={showing(POLL_MENU)}
                         close={() => {this.closeWidget(POLL_MENU)}}
+                        showPoll={() => this.showWidget(SHOW_POLL)}
+                        updateParentState={this.updateParentState}
                         id={POLL_MENU.replace(/\s/g, "")}
                     />
                     <CreateNewPoll
@@ -138,6 +143,15 @@ class App extends Component {
                         authenticated={this.state.authenticated}
                         username={this.state.username}
                         id={CREATE_NEW_POLL.replace(/\s/g, "")}
+                    />
+                    <ShowPoll
+                        order={orderOf(SHOW_POLL)}
+                        showing={showing(SHOW_POLL)}
+                        close={() => {this.closeWidget(SHOW_POLL)}}
+                        pollId={this.state.showingPollId}
+                        authenticated={this.state.authenticated}
+                        username={this.state.username}
+                        id={SHOW_POLL.replace(/\s/g, "")}
                     />
                     <Register
                         order={orderOf(REGISTER)}

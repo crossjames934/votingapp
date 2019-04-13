@@ -96,7 +96,7 @@ module.exports = app => {
                     token.token
             };
             sgMail.send(mail);
-            res.send('Registered successfully, please check email for activation code.');
+            res.send('Registered successfully, please check email for activation link.');
         } catch (e) {
             res.send(e);
         }
@@ -109,13 +109,63 @@ module.exports = app => {
             res.json({loggedIn: true, message: req.user.username});
         });
 
-    // New Poll
+    // List of Polls for Poll Menu
+    app.get('/pollList', async (req, res) => {
+        try {
+            const allPolls = await models.Poll.find();
+            const list = allPolls.map(poll => ({question: poll.question, id: poll._id, choices: poll.choices}));
+            res.send(list);
+        } catch (e) {
+            res.send(e);
+        }
+    });
+
+    // Get data for poll to display in showPoll widget
+    app.get('/pollData/:id', async (req, res) => {
+        try {
+            const poll = await models.Poll.findById(req.params.id);
+            res.send(poll);
+        } catch (e) {
+            res.send(e);
+        }
+    });
+
+    // Post a new poll
     app.post('/poll', async (req, res) => {
         try {
             const {question, choices, author} = req.body;
-            const newPoll = new models.Poll({question, choices, author, votes: []});
+            const newPoll = new models.Poll({
+                question,
+                choices,
+                author,
+                votes: {}
+            });
+            // For each choice, make an empty array to store ip address of voter
+            choices.forEach(choice => {
+                newPoll.votes[choice] = [];
+            });
             await newPoll.save();
             res.send('poll msg posted');
+        } catch (e) {
+            res.send(e);
+        }
+    });
+
+    app.post('/castVote', async (req, res) => {
+        try {
+            const {choice, id, username} = req.body;
+            const poll = await models.Poll.findById(id);
+            poll.choices.forEach(option => {
+                const indexOfUsername = poll.votes[option].indexOf(username);
+                if (indexOfUsername > -1) {
+                    poll.votes[option].splice(indexOfUsername, 1);
+                }
+            });
+            poll.votes[choice] = [username, ...poll.votes[choice]];
+            const savedPoll = await models.Poll.findOneAndUpdate({_id: id}, {votes: poll.votes}, {new: true});
+            const results = poll.choices.map(option => ({choice: option, count: savedPoll.votes[option].length}));
+            // console.log(savedPoll);
+            res.send(results);
         } catch (e) {
             res.send(e);
         }

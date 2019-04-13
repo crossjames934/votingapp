@@ -11,7 +11,7 @@ const pollSchema = new mongoose.Schema({
     author: String,
     question: String,
     choices: Array,
-    votes: Array
+    votes: Object
 });
 
 const tokenSchema = new mongoose.Schema({

@@ -102,6 +102,33 @@ input {
     padding: 0;
 }
 
+.userChoices {
+    display: flex;
+    flex-direction: column;
+}
+
+.choiceBtn {
+    font-size: 15px;
+    padding: 10px;
+    margin: 5px;
+    background: #ADADDD;
+    cursor: pointer;
+}
+
+.pollMenuChoice:hover {
+    color: gold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/*.choiceCaption {*/
+    /*margin: 0;*/
+    /*display: flex;*/
+    /*justify-content: space-around;*/
+    /*font-variant: small-caps;*/
+    /*color: grey;*/
+/*}*/
+
 @media screen and (max-width: 750px) {
     .votingImg {
         display: none;
