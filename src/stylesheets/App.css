@@ -68,6 +68,10 @@ input {
     cursor: pointer;
 }
 
+.hamburgerIcon:hover {
+    color: gold;
+}
+
 .mainMenuOptions {
     list-style: none;
     font-size: 20px;
@@ -109,6 +113,11 @@ input {
 
 .closeWidgetBtn {
     padding: 0 0 0 90%;
+}
+
+.noWidgetMsg:hover {
+    cursor: pointer;
+    color: gold;
 }
 
 .innerX {

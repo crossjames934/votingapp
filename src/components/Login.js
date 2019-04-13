@@ -9,6 +9,7 @@ class Login extends Component {
             password: "",
             failedMessage: ""
         };
+        this.loginTimeout = null;
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -19,6 +20,9 @@ class Login extends Component {
 
     handleSubmit(e) {
         this.props.updateParentState({attemptedLogin: true});
+        // this.loginTimeout = setTimeout(() => {
+        //
+        // }, 10000);
         this.setState({failedMessage: ""});
         const { username, password } = this.state;
         axios.post('/login', {username, password})

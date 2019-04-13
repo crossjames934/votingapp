@@ -4,7 +4,7 @@ class MainMenu extends Component {
     options() {
         let visibleOptions = [...this.props.widgets];
         if (this.props.authenticated) {
-            visibleOptions = visibleOptions.filter(option => option !== "login" && option !== "register");
+            visibleOptions = visibleOptions.filter(option => option !== "Login" && option !== "Register");
         }
         let listItems = visibleOptions.map(widget => {
             const widgetShowing = this.props.visibleWidgets.includes(widget);
