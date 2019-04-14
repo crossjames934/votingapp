@@ -31,7 +31,8 @@ class App extends Component {
             username: "",
             visibleWidgets: [INTRO, POLL_MENU],
             attemptedLogin: false,
-            showingPollId: ""
+            showingPollId: "",
+            pollMenuNeedsUpdate: false
         };
         this.closeWidget = this.closeWidget.bind(this);
         this.showWidget = this.showWidget.bind(this);
@@ -134,6 +135,7 @@ class App extends Component {
                         close={() => {this.closeWidget(POLL_MENU)}}
                         showPoll={() => this.showWidget(SHOW_POLL)}
                         updateParentState={this.updateParentState}
+                        needsUpdate={this.state.pollMenuNeedsUpdate}
                         id={POLL_MENU.replace(/\s/g, "")}
                     />
                     <CreateNewPoll
@@ -142,6 +144,7 @@ class App extends Component {
                         close={() => {this.closeWidget(CREATE_NEW_POLL)}}
                         authenticated={this.state.authenticated}
                         username={this.state.username}
+                        updateParentState={this.updateParentState}
                         id={CREATE_NEW_POLL.replace(/\s/g, "")}
                     />
                     <ShowPoll

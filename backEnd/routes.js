@@ -111,7 +111,14 @@ module.exports = app => {
     app.get('/pollList', async (req, res) => {
         try {
             const allPolls = await models.Poll.find();
-            const list = allPolls.map(poll => ({question: poll.question, id: poll._id, choices: poll.choices}));
+            allPolls.sort((a,b) => b.dateAdded - a.dateAdded);
+            let list = allPolls.map(poll => ({
+                question: poll.question,
+                id: poll._id,
+                dateAdded: poll.dateAdded,
+                lastVotedOn: poll.lastVotedOn,
+                voteCount: poll.voteCount
+            }));
             res.send(list);
         } catch (e) {
             res.send(e);
@@ -136,7 +143,10 @@ module.exports = app => {
                 question,
                 choices,
                 author,
-                votes: {}
+                votes: {},
+                dateAdded: new Date(),
+                lastVotedOn: new Date(),
+                voteCount: 0
             });
             // For each choice, make an empty array to store ip address of voter
             choices.forEach(choice => {
@@ -157,10 +167,15 @@ module.exports = app => {
                 const indexOfUsername = poll.votes[option].indexOf(username);
                 if (indexOfUsername > -1) {
                     poll.votes[option].splice(indexOfUsername, 1);
+                    poll.voteCount--;
                 }
             });
             poll.votes[choice] = [username, ...poll.votes[choice]];
-            const savedPoll = await models.Poll.findOneAndUpdate({_id: id}, {votes: poll.votes}, {new: true});
+            poll.lastVotedOn = new Date();
+            poll.voteCount++;
+            const {votes, voteCount, lastVotedOn} = poll;
+            const updateFields = {votes, voteCount, lastVotedOn};
+            const savedPoll = await models.Poll.findOneAndUpdate({_id: id}, updateFields, {new: true});
             const results = poll.choices.map(option => ({choice: option, count: savedPoll.votes[option].length}));
             // console.log(savedPoll);
             res.send(results);

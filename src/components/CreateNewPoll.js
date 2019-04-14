@@ -9,7 +9,9 @@ class CreateNewPoll extends Component {
         super(props);
         this.state = {
             question: "",
-            choices: ["", ""]
+            choices: ["", ""],
+            submitAttempted: false,
+            submitSucceeded: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,6 +23,7 @@ class CreateNewPoll extends Component {
     }
 
     async handleSubmit(e) {
+        await this.setState({submitAttempted: true});
         const author = this.props.username;
         const { question, choices } = this.state;
         axios.post('/poll', {question, choices, author})
@@ -30,10 +33,19 @@ class CreateNewPoll extends Component {
                     alert("There was a problem after connecting to the server, see console for more information");
                     return console.log(response);
                 }
-
+                this.setState({
+                    question: "",
+                    choices: ["", ""],
+                    submitSucceeded: true
+                });
+                this.props.updateParentState({pollMenuNeedsUpdate: true});
             })
             .catch((response) => {
                 //handle error
+                this.setState({
+                    submitSucceeded: false,
+                    submitAttempted: false
+                });
                 console.log(response);
             });
         e.preventDefault();
@@ -74,8 +86,41 @@ class CreateNewPoll extends Component {
         });
     }
 
-    addNewChoice() {
+    addNewChoice(e) {
         this.setState({choices: [...this.state.choices, ""]});
+        e.preventDefault();
+    }
+
+    showSubmitStatus() {
+        const message = this.state.submitSucceeded ? "Poll successfully submitted" : "Sending...";
+        const goBack = () => {
+            this.setState({
+                submitAttempted: false,
+                submitSucceeded: false
+            });
+        };
+        return(
+            <div>
+                <p className={"red"}>{message}</p>
+                <p onClick={goBack} className="clickableText">Back</p>
+            </div>
+        );
+    }
+
+    showForm() {
+        return(
+            <form onSubmit={this.handleSubmit}>
+                <div className="spaceAround">
+                    <p>Question: </p>
+                    <input name={"question"} onChange={this.handleChange} type="text" value={this.state.question} required/>
+                    {this.blankSpace()}
+                </div>
+                {this.choices()}
+                <button className={"addNewChoiceBtn"} onClick={this.addNewChoice}>Add New Choice</button>
+                <br/>
+                <input className={"submitBtn"} type="submit" value="Submit Poll"/>
+            </form>
+        );
     }
 
     render() {
@@ -84,17 +129,7 @@ class CreateNewPoll extends Component {
                 <div className="scrollable">
                     <CloseWidgetBtn close={this.props.close}/>
                     <h2>Create New Poll</h2>
-                    <form onSubmit={this.handleSubmit}>
-                        <div className="spaceAround">
-                            <p>Question: </p>
-                            <input name={"question"} onChange={this.handleChange} type="text" value={this.state.question} required/>
-                            {this.blankSpace()}
-                        </div>
-                        {this.choices()}
-                        <button className={"addNewChoiceBtn"} onClick={this.addNewChoice}>Add New Choice</button>
-                        <br/>
-                        <input className={"submitBtn"} type="submit" value="Submit Poll"/>
-                    </form>
+                    {this.state.submitAttempted ? this.showSubmitStatus() : this.showForm()}
                 </div>
             </div>
         );
