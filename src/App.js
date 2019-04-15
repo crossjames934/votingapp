@@ -154,6 +154,7 @@ class App extends Component {
                         pollId={this.state.showingPollId}
                         authenticated={this.state.authenticated}
                         username={this.state.username}
+                        updateParentState={this.updateParentState}
                         id={SHOW_POLL.replace(/\s/g, "")}
                     />
                     <Register

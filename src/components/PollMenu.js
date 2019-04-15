@@ -73,7 +73,7 @@ class PollMenu extends Component {
     componentDidUpdate() {
         if (this.props.needsUpdate) {
             this.props.updateParentState({pollMenuNeedsUpdate: false});
-            this.getPollList();
+            this.sortList();
         }
     }
 

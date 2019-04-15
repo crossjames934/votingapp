@@ -17,7 +17,6 @@ class ShowPoll extends Component {
             },
             responseData: []
         }
-        // this.updateInProgress = false;
     }
 
     componentDidUpdate() {
@@ -52,6 +51,7 @@ class ShowPoll extends Component {
                 responseData: voteResponse.data,
                 submittedVote: true
             });
+            this.props.updateParentState({pollMenuNeedsUpdate: true});
         } catch (e) {
             alert("There was an error getting information to or from the server. Please check console for error.");
             console.log(e);
