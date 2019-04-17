@@ -14,7 +14,8 @@ class PollMenu extends Component {
         super(props);
         this.state = {
             searchQuery: "",
-            list: []
+            list: [],
+            sortBy: RECENT
         };
         this.showList = this.showList.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -32,7 +33,8 @@ class PollMenu extends Component {
                poll.dateAdded = new Date(poll.dateAdded);
                poll.lastVotedOn = new Date(poll.lastVotedOn);
             });
-            this.setState({list});
+            await this.setState({list});
+            this.sortList(this.state.sortBy);
         } catch (e) {
             alert('There was an error getting polls from the server, see console for error.');
             console.log(e);
@@ -63,7 +65,7 @@ class PollMenu extends Component {
 
     sortList(category) {
         const list = this.state.list.sort((a,b) => b[category] - a[category]);
-        this.setState({list}, this.showList);
+        this.setState({list, sortBy: category}, this.showList);
     }
 
     handleChange(e) {
@@ -73,7 +75,7 @@ class PollMenu extends Component {
     componentDidUpdate() {
         if (this.props.needsUpdate) {
             this.props.updateParentState({pollMenuNeedsUpdate: false});
-            this.sortList();
+            this.getPollList();
         }
     }
 
