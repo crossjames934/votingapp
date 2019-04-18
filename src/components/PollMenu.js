@@ -52,12 +52,21 @@ class PollMenu extends Component {
             }
         }
         return list.map(poll => {
+            const showIfVoted = {
+                display: poll.userHasVoted ? "flex" : "none"
+            };
             return(
-                <div>
+                <div className={'flexCenter'}>
                     <p className={"pollMenuChoice"} onClick={() => {
                         this.props.updateParentState({showingPollId: poll.id});
                         this.props.showPoll();
                     }}>{poll.question}</p>
+                    <p
+                        // onMouseOver={this.setState({showingToolTip: true})}
+                        // onMouseOut={this.setState({showingToolTip: false})}
+                        style={showIfVoted}
+                        className={'votedSign'}
+                    >V</p>
                 </div>
             );
         })
@@ -80,6 +89,9 @@ class PollMenu extends Component {
     }
 
     render() {
+        const toolTipShowing = {
+            display: this.state.showingToolTip ? "flex" : "none"
+        };
         return (
             <div id={this.props.id} className={"widget"} style={widgetStyle(this.props.order, this.props.showing)}>
                 <div className="scrollable">

@@ -33,21 +33,9 @@ routes(app);
 
 // Index
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    // res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.render('build/index.html');
 });
-
-// setTimeout(() => {
-//     const testPoll = new models.Poll({
-//         author: "James Cross",
-//         question: "Who is the best?",
-//         choices: ['Me', 'You'],
-//         votes: []
-//     });
-//     testPoll.save((err, data) => {
-//         if (err) return console.error(err);
-//         console.log(data);
-//     })
-// }, 5000);
 
 // Listen for requests
 app.listen(port);

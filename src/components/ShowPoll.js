@@ -20,6 +20,7 @@ class ShowPoll extends Component {
         }
     }
 
+    // Refresh widget if user has chosen to display new poll
     componentDidUpdate() {
         if (this.props.pollId !== this.state.pollId) {
             this.setState({
@@ -33,6 +34,7 @@ class ShowPoll extends Component {
         try {
             const pollCall = await axios.get('pollData/' + this.props.pollId);
             const pollData = pollCall.data;
+            console.log(pollData);
             this.setState({pollData});
         } catch (e) {
             alert("There was an error getting the poll data from the server");
@@ -69,9 +71,13 @@ class ShowPoll extends Component {
                     {choice}
                 </button>) :
             "Could not connect to server.";
+        const seeResults = () => {
+            this.setState({submittedVote: true});
+        };
         return(
             <div className={"userChoices"}>
                 {choices}
+                <p className={'clickableText navigationText'} onClick={seeResults}>See Results</p>
             </div>
         );
     }
@@ -83,11 +89,15 @@ class ShowPoll extends Component {
             if (count > 0) choiceArr.push(choice);
             return(<p>{choice}: {count} votes</p>)
         });
+        const changeVote = () => {
+            this.setState({submittedVote: false});
+        };
         return(
             <div>
                 <h3>Results:</h3>
                 <Chart choiceArr={choiceArr} responseData={this.state.responseData}/>
                 {choiceCount}
+                <p className={'clickableText navigationText'} onClick={changeVote}>Change Vote</p>
             </div>
         )
     }

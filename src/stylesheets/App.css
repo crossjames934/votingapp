@@ -145,6 +145,14 @@ input {
     justify-content: space-between;
 }
 
+.navigationText {
+    background: #2F3F49;
+    width: 200px;
+    margin: 10px auto;
+    color: white;
+    padding: 10px;
+}
+
 .clickableText:hover {
     text-decoration: underline;
     color: gold;
@@ -219,12 +227,6 @@ input {
     border-radius: 5px;
 }
 
-/*.searchIcon {*/
-    /*position: absolute;*/
-    /*top: 119px;*/
-    /*left: 77px;*/
-/*}*/
-
 .sortBy {
     display: flex;
     justify-content: space-between;
@@ -235,10 +237,38 @@ input {
     font-variant: small-caps;
 }
 
-.votingTick {
+.votedSign {
     font-family: 'Dancing Script', cursive;
-
+    font-size: 9px;
+    margin-left: 20px;
+    background: black;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+/*.toolTip {*/
+    /*position: absolute;*/
+    /*background: rgba(0, 0, 0, 0.7);*/
+    /*color: white;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    /*pointer-events: none;*/
+    /*width: 200px;*/
+    /*height: 150px;*/
+/*}*/
+
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 
 @keyframes appear {
     0% {

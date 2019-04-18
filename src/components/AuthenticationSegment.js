@@ -10,7 +10,8 @@ class AuthenticationSegment extends Component {
                 this.props.updateParentState({
                     authenticated: false,
                     username: "",
-                    attemptedLogin: false
+                    attemptedLogin: false,
+                    pollMenuNeedsUpdate: true
                 });
             })
             .catch(e => {

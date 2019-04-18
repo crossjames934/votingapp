@@ -39,7 +39,8 @@ class Login extends Component {
                     // update log in status of parent
                     this.props.updateParentState({
                         authenticated: true,
-                        username: response.data.message
+                        username: response.data.message,
+                        pollMenuNeedsUpdate: true
                     });
                     // Must clear fields for cyber-security!
                     this.setState({

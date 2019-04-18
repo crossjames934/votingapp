@@ -7,11 +7,6 @@ const passport = require('passport');
 const models = require('./models');
 
 module.exports = app => {
-    //  Test
-    app.get('/ping', (req, res) => {
-        return res.send('pong!');
-    });
-
     // Get IP address
     app.get('/ip', (req, res) => {
         let ipAddress = req.connection.remoteAddress;
@@ -112,13 +107,24 @@ module.exports = app => {
         try {
             const allPolls = await models.Poll.find();
             allPolls.sort((a,b) => b.dateAdded - a.dateAdded);
-            let list = allPolls.map(poll => ({
-                question: poll.question,
-                id: poll._id,
-                dateAdded: poll.dateAdded,
-                lastVotedOn: poll.lastVotedOn,
-                voteCount: poll.voteCount
-            }));
+            let list = allPolls.map(poll => {
+                let userHasVoted = false;
+                for (let i = 0; req.user && i < poll.choices.length; i++) {
+                    const choice = poll.choices[i];
+                    if (poll.votes[choice].includes(req.user.username)) {
+                        userHasVoted = true;
+                        break;
+                    }
+                }
+                return {
+                    question: poll.question,
+                    id: poll._id,
+                    dateAdded: poll.dateAdded,
+                    lastVotedOn: poll.lastVotedOn,
+                    voteCount: poll.voteCount,
+                    userHasVoted
+                }
+            });
             res.send(list);
         } catch (e) {
             res.send(e);
@@ -199,7 +205,6 @@ module.exports = app => {
             const updateFields = {votes, voteCount, lastVotedOn};
             const savedPoll = await models.Poll.findOneAndUpdate({_id: id}, updateFields, {new: true});
             const results = poll.choices.map(option => ({choice: option, count: savedPoll.votes[option].length}));
-            // console.log(savedPoll);
             res.send(results);
         } catch (e) {
             res.send(e);
