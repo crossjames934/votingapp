@@ -189,21 +189,25 @@ module.exports = app => {
 
     app.post('/castVote', async (req, res) => {
         try {
-            const {choice, id, username} = req.body;
+            const {choice, id, username, justLooking} = req.body;
             const poll = await models.Poll.findById(id);
-            poll.choices.forEach(option => {
-                const indexOfUsername = poll.votes[option].indexOf(username);
-                if (indexOfUsername > -1) {
-                    poll.votes[option].splice(indexOfUsername, 1);
-                    poll.voteCount--;
-                }
-            });
-            poll.votes[choice] = [username, ...poll.votes[choice]];
-            poll.lastVotedOn = new Date();
-            poll.voteCount++;
-            const {votes, voteCount, lastVotedOn} = poll;
-            const updateFields = {votes, voteCount, lastVotedOn};
-            const savedPoll = await models.Poll.findOneAndUpdate({_id: id}, updateFields, {new: true});
+            let savedPoll = poll;
+            // Implemented this so that users can check results without voting
+            if (!justLooking) {
+                poll.choices.forEach(option => {
+                    const indexOfUsername = poll.votes[option].indexOf(username);
+                    if (indexOfUsername > -1) {
+                        poll.votes[option].splice(indexOfUsername, 1);
+                        poll.voteCount--;
+                    }
+                });
+                poll.votes[choice] = [username, ...poll.votes[choice]];
+                poll.lastVotedOn = new Date();
+                poll.voteCount++;
+                const {votes, voteCount, lastVotedOn} = poll;
+                const updateFields = {votes, voteCount, lastVotedOn};
+                savedPoll = await models.Poll.findOneAndUpdate({_id: id}, updateFields, {new: true});
+            }
             const results = poll.choices.map(option => ({choice: option, count: savedPoll.votes[option].length}));
             res.send(results);
         } catch (e) {

@@ -72,6 +72,11 @@ class App extends Component {
         this.setState({visibleWidgets: updateArray});
     }
 
+    showMenu() {
+        window.scrollTo(0, 0);
+        this.showWidget(MAIN_MENU);
+    }
+
     bringMenuToFront() {
         const otherWidgets = this.state.visibleWidgets.filter(widget => widget !== MAIN_MENU);
         this.setState({visibleWidgets: [MAIN_MENU, ...otherWidgets]});
@@ -87,7 +92,7 @@ class App extends Component {
         return (
             <div className="App">
                 <header className="App-header">
-                    <p className={"hamburgerIcon"} onClick={() => { this.showWidget(MAIN_MENU) }}>&#9776;</p>
+                    <p className={"hamburgerIcon"} onClick={() => { this.showMenu() }}>&#9776;</p>
                     <h1 id={"mainTitle"}>Voting App</h1>
                     <AuthenticationSegment
                         authenticated={this.state.authenticated}

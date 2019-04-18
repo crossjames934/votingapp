@@ -21,10 +21,17 @@ class ShowPoll extends Component {
     }
 
     // Refresh widget if user has chosen to display new poll
-    componentDidUpdate() {
+    async componentDidUpdate() {
         if (this.props.pollId !== this.state.pollId) {
+            const voteResponse = await axios.post('/castVote', {
+                choice: null,
+                id: this.props.pollId,
+                username: this.props.username,
+                justLooking: true
+            });
             this.setState({
                 pollId: this.props.pollId,
+                responseData: voteResponse.data,
                 submittedVote: false
             }, this.getPollData);
         }
@@ -34,7 +41,6 @@ class ShowPoll extends Component {
         try {
             const pollCall = await axios.get('pollData/' + this.props.pollId);
             const pollData = pollCall.data;
-            console.log(pollData);
             this.setState({pollData});
         } catch (e) {
             alert("There was an error getting the poll data from the server");
@@ -49,7 +55,7 @@ class ShowPoll extends Component {
                 const ip = await axios.get('ip');
                 username = ip.data;
             }
-            const voteResponse = await axios.post('/castVote', {choice, id: this.props.pollId, username});
+            const voteResponse = await axios.post('/castVote', {choice, id: this.props.pollId, username, justLooking: false});
             this.setState({
                 responseData: voteResponse.data,
                 submittedVote: true
