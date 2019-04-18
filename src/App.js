@@ -9,6 +9,7 @@ import AuthenticationSegment from './components/AuthenticationSegment';
 import MainMenu from './components/MainMenu';
 import Intro from './components/Intro';
 import PollMenu from './components/PollMenu';
+import MyPolls from './components/MyPolls';
 import CreateNewPoll from './components/CreateNewPoll';
 import ShowPoll from './components/ShowPoll';
 import Register from './components/Register';
@@ -18,6 +19,7 @@ import Login from './components/Login';
 const INTRO = "Intro";
 const MAIN_MENU = "Main Menu";
 const POLL_MENU = "Poll Menu";
+const MY_POLLS = "My Polls";
 const REGISTER = "Register";
 const LOGIN = "Login";
 const CREATE_NEW_POLL = "Create New Poll";
@@ -62,9 +64,10 @@ class App extends Component {
     }
 
     showWidget(widgetName) {
-        const containsMenu = this.state.visibleWidgets.includes(MAIN_MENU);
         const otherWidgets = this.state.visibleWidgets.filter(widget => widget !== MAIN_MENU);
         const updateArray = [widgetName, ...otherWidgets];
+        // put main menu to left if open
+        const containsMenu = this.state.visibleWidgets.includes(MAIN_MENU);
         if (containsMenu) updateArray.unshift(MAIN_MENU);
         this.setState({visibleWidgets: updateArray});
     }
@@ -73,22 +76,6 @@ class App extends Component {
         const otherWidgets = this.state.visibleWidgets.filter(widget => widget !== MAIN_MENU);
         this.setState({visibleWidgets: [MAIN_MENU, ...otherWidgets]});
     }
-
-    // componentDidUpdate() {
-    //     const widgets = document.getElementsByClassName('widget');
-    //     for (let i = 0; i < widgets.length; i++) {
-    //         const el = widgets[i];
-    //         const curOverflow = el.style.overflow;
-    //
-    //         if ( !curOverflow || curOverflow === "visible" )
-    //             el.style.overflow = "hidden";
-    //
-    //         let isOverflowing = el.clientWidth < el.scrollWidth
-    //             || el.clientHeight < el.scrollHeight;
-    //
-    //         el.style.overflowY = isOverflowing ? "scroll" : "hidden";
-    //     }
-    // }
 
     render() {
         // Everything in <main> is divided into 'widgets'
@@ -112,7 +99,7 @@ class App extends Component {
                 </header>
                 <main>
                     <MainMenu
-                        widgets={[INTRO, POLL_MENU, CREATE_NEW_POLL, REGISTER, LOGIN]}
+                        widgets={[INTRO, POLL_MENU, MY_POLLS, CREATE_NEW_POLL, REGISTER, LOGIN]}
                         order={orderOf(MAIN_MENU)}
                         showing={showing(MAIN_MENU)}
                         close={() => {this.closeWidget(MAIN_MENU)}}
@@ -134,9 +121,21 @@ class App extends Component {
                         showing={showing(POLL_MENU)}
                         close={() => {this.closeWidget(POLL_MENU)}}
                         showPoll={() => this.showWidget(SHOW_POLL)}
+                        authenticated={this.state.authenticated}
+                        username={this.state.username}
                         updateParentState={this.updateParentState}
                         needsUpdate={this.state.pollMenuNeedsUpdate}
                         id={POLL_MENU.replace(/\s/g, "")}
+                    />
+                    <MyPolls
+                        order={orderOf(MY_POLLS)}
+                        showing={showing(MY_POLLS)}
+                        close={() => {this.closeWidget(MY_POLLS)}}
+                        showPoll={() => this.showWidget(SHOW_POLL)}
+                        authenticated={this.state.authenticated}
+                        username={this.state.username}
+                        updateParentState={this.updateParentState}
+                        id={MY_POLLS.replace(/\s/g, "")}
                     />
                     <CreateNewPoll
                         order={orderOf(CREATE_NEW_POLL)}
@@ -161,12 +160,14 @@ class App extends Component {
                         order={orderOf(REGISTER)}
                         showing={showing(REGISTER)}
                         close={() => {this.closeWidget(REGISTER)}}
+                        authenticated={this.state.authenticated}
                         id={REGISTER.replace(/\s/g, "")}
                     />
                     <Login
                         order={orderOf(LOGIN)}
                         showing={showing(LOGIN)}
                         close={() => {this.closeWidget(LOGIN)}}
+                        closeRegister={() => {this.closeWidget(REGISTER)}}
                         authenticated={this.state.authenticated}
                         attemptedLogin={this.state.attemptedLogin}
                         updateParentState={this.updateParentState}

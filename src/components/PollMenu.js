@@ -98,7 +98,7 @@ class PollMenu extends Component {
                             <p onClick={() => { this.sortList(LAST_VOTE) }} className={'clickableText'}>Last voted on</p>
                             <p onClick={() => { this.sortList(MOST_VOTES) }} className={'clickableText'}>Most votes</p>
                         </div>
-                        <span aria-label={'magnifying glass search icon'} role={'img'} className="searchIcon">🔍</span>
+                        {/*<span aria-label={'magnifying glass search icon'} role={'img'} className="searchIcon">🔍</span>*/}
                         {this.showList()}
                     </div>
                 </div>

@@ -47,6 +47,7 @@ class Login extends Component {
                         password: ""
                     });
                     // close widget after 2 seconds
+                    this.props.closeRegister();
                     setTimeout(this.props.close, 2000);
                 } else {
                     this.setState({failedMessage: response.data.message});

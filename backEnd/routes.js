@@ -159,6 +159,28 @@ module.exports = app => {
         }
     });
 
+    // Get list of own polls
+    app.post('/myPolls', async (req, res) => {
+        const responseObject = {
+            error: null,
+            message: "",
+            polls: []
+        };
+        try {
+            const pollList = await models.Poll.find({author: req.body.username});
+            if (pollList.length === 0) {
+                responseObject.message = 'No polls found made by ' + req.body.username;
+                responseObject.error = true;
+            } else {
+                responseObject.polls = pollList;
+            }
+        } catch (e) {
+            responseObject.error = e;
+            responseObject.message = "There was an error on the server side, see console for error";
+        }
+        res.send(responseObject)
+    });
+
     app.post('/castVote', async (req, res) => {
         try {
             const {choice, id, username} = req.body;
