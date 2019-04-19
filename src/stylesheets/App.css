@@ -89,15 +89,23 @@ input {
     z-index: 20;
 }
 
-.hamburgerIcon {
-    width: 200px;
-    font-size: 50px;
-    border-radius: 20px;
+.hamburgerPic {
+    width: 50px;
     cursor: pointer;
 }
 
-.hamburgerIcon:hover {
-    color: gold;
+.hamburgerIcon {
+    width: 200px;
+    height: 100%;
+    font-size: 50px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hamburgerPic:hover {
+    filter: saturate(500%) brightness(100%) hue-rotate(55deg);
 }
 
 .mainMenuOptions {
@@ -167,15 +175,15 @@ input {
     padding: 20px;
     margin: 20px 0 0 20px;
     transform: scale(0);
-    width: 350px;
+    width: 400px;
     -webkit-box-shadow: 0 0 15px 3px black;
     -moz-box-shadow: 0 0 15px 3px black;
     box-shadow: 0 0 15px 3px black;
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 855px) {
     .widget {
-        width: 95vw;
+        max-width: 80vw;
     }
 }
 

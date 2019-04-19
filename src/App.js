@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './stylesheets/App.css';
-// import VotingImg from './images/voting.jpg';
+import HamburgerImg from './images/hamburgerPink.png';
 
 // My Modules
 import AuthenticationSegment from './components/AuthenticationSegment';
@@ -106,7 +106,9 @@ class App extends Component {
         return (
             <div className="App">
                 <header className="App-header">
-                    <p className={"hamburgerIcon"} onClick={() => { this.showMenu() }}>&#9776;</p>
+                    <div className="hamburgerIcon">
+                        <img alt={"MENU"} src={HamburgerImg} className={"hamburgerPic"} onClick={() => { this.showMenu() }}/>
+                    </div>
                     <h1 id={"mainTitle"}>Voting App</h1>
                     <AuthenticationSegment
                         authenticated={this.state.authenticated}
