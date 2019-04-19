@@ -167,11 +167,16 @@ input {
     padding: 20px;
     margin: 20px 0 0 20px;
     transform: scale(0);
-    min-width: 350px;
+    width: 350px;
     -webkit-box-shadow: 0 0 15px 3px black;
     -moz-box-shadow: 0 0 15px 3px black;
     box-shadow: 0 0 15px 3px black;
-    /*overflow-y: scroll;*/
+}
+
+@media only screen and (max-width: 400px) {
+    .widget {
+        width: 95vw;
+    }
 }
 
 .spaceAround {
@@ -257,6 +262,10 @@ input {
     align-items: center;
 }
 
+.shine {
+    animation: shine 1s ease-out 0s forwards;
+}
+
 @keyframes appear {
     0% {
         transform: scale(0);
@@ -264,5 +273,14 @@ input {
 
     100% {
         transform: scale(1);
+    }
+}
+
+@keyframes shine {
+    0% {
+        color: gold;
+    }
+    100% {
+        color: black;
     }
 }

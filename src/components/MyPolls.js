@@ -20,7 +20,10 @@ class MyPolls extends Component {
 
     componentDidUpdate() {
         if (this.state.previousUsername !== this.props.username) {
-            this.setState({previousUsername: this.props.username}, this.getMyPolls);
+            this.setState({
+                previousUsername: this.props.username,
+                polls: []
+            }, this.getMyPolls);
         }
     }
 
@@ -45,6 +48,7 @@ class MyPolls extends Component {
         if (!this.props.authenticated) return (<p className={'red'}>Please log in to see poll list</p>);
         return this.state.polls.map(poll => {
             const choosePoll = () => {
+                window.scrollTo(0, 0);
                 this.props.updateParentState({showingPollId: poll._id});
                 this.props.showPoll();
             };
@@ -60,6 +64,8 @@ class MyPolls extends Component {
                 <div className="scrollable">
                     <CloseWidgetBtn close={this.props.close}/>
                     <h2>My Polls</h2>
+                    <p onClick={this.props.createNew} className="clickableText">Create New Poll</p>
+                    <hr/>
                     {this.showList()}
                     <p className="red">{this.state.errorMessage}</p>
                 </div>

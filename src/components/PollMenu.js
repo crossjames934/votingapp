@@ -57,7 +57,8 @@ class PollMenu extends Component {
             };
             return(
                 <div className={'flexCenter'}>
-                    <p className={"pollMenuChoice"} onClick={() => {
+                    <p className={"pollMenuChoice clickableText"} onClick={() => {
+                        window.scrollTo(0, 0);
                         this.props.updateParentState({showingPollId: poll.id});
                         this.props.showPoll();
                     }}>{poll.question}</p>
@@ -89,15 +90,17 @@ class PollMenu extends Component {
     }
 
     render() {
-        const toolTipShowing = {
-            display: this.state.showingToolTip ? "flex" : "none"
-        };
+        // isSelected underlines the currently chosen sort-by option
+        const isSelected = (choice) => ({
+            textDecoration: choice === this.state.sortBy ? 'underline' : 'none'
+        });
         return (
             <div id={this.props.id} className={"widget"} style={widgetStyle(this.props.order, this.props.showing)}>
                 <div className="scrollable">
                     <CloseWidgetBtn close={this.props.close}/>
                     <h2>Poll Menu</h2>
                     <div>
+                        <p onClick={this.props.createNew} className="clickableText">Create New Poll</p>
                         <input
                             onChange={this.handleChange}
                             name='searchQuery'
@@ -106,11 +109,11 @@ class PollMenu extends Component {
                             type='text'
                         />
                         <div className="sortBy">
-                            <p onClick={() => { this.sortList(RECENT) }} className={'clickableText'}>Recently made</p>
-                            <p onClick={() => { this.sortList(LAST_VOTE) }} className={'clickableText'}>Last voted on</p>
-                            <p onClick={() => { this.sortList(MOST_VOTES) }} className={'clickableText'}>Most votes</p>
+                            <p style={isSelected(RECENT)} onClick={() => { this.sortList(RECENT) }} className={'clickableText'}>Recently made</p>
+                            <p style={isSelected(LAST_VOTE)} onClick={() => { this.sortList(LAST_VOTE) }} className={'clickableText'}>Last voted on</p>
+                            <p style={isSelected(MOST_VOTES)} onClick={() => { this.sortList(MOST_VOTES) }} className={'clickableText'}>Most votes</p>
                         </div>
-                        {/*<span aria-label={'magnifying glass search icon'} role={'img'} className="searchIcon">🔍</span>*/}
+                        <hr/>
                         {this.showList()}
                     </div>
                 </div>

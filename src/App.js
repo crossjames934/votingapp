@@ -40,6 +40,7 @@ class App extends Component {
         this.showWidget = this.showWidget.bind(this);
         this.updateParentState = this.updateParentState.bind(this);
         this.bringMenuToFront = this.bringMenuToFront.bind(this);
+        this.scrollToTarget = this.scrollToTarget.bind(this);
     }
 
     componentDidMount() {
@@ -69,17 +70,30 @@ class App extends Component {
         // put main menu to left if open
         const containsMenu = this.state.visibleWidgets.includes(MAIN_MENU);
         if (containsMenu) updateArray.unshift(MAIN_MENU);
-        this.setState({visibleWidgets: updateArray});
+        this.setState({visibleWidgets: updateArray}, () => {
+            if (widgetName !== MAIN_MENU) this.scrollToTarget();
+        });
     }
 
     showMenu() {
-        window.scrollTo(0, 0);
+        if (this.state.visibleWidgets.includes(MAIN_MENU)) {
+            document.getElementById('menuHeader').classList.remove('shine');
+            setTimeout(() => {
+                document.getElementById('menuHeader').classList.add('shine');
+            }, 100);
+        }
         this.showWidget(MAIN_MENU);
+        window.scrollTo(0, 0);
     }
 
     bringMenuToFront() {
         const otherWidgets = this.state.visibleWidgets.filter(widget => widget !== MAIN_MENU);
         this.setState({visibleWidgets: [MAIN_MENU, ...otherWidgets]});
+    }
+
+    scrollToTarget() {
+        const yTarget = window.innerWidth < 855 && this.state.visibleWidgets.includes(MAIN_MENU) ? window.innerHeight * 0.74 : 0;
+        window.scrollTo(0, yTarget);
     }
 
     render() {
@@ -97,8 +111,9 @@ class App extends Component {
                     <AuthenticationSegment
                         authenticated={this.state.authenticated}
                         username={this.state.username}
-                        showRegister={() => this.showWidget(REGISTER)}
-                        showLogin={() => this.showWidget(LOGIN)}
+                        showRegister={() => {this.showWidget(REGISTER)}}
+                        showLogin={() => {this.showWidget(LOGIN)}}
+                        scrollToTarget={this.scrollToTarget}
                         updateParentState={this.updateParentState}
                     />
                 </header>
@@ -113,6 +128,7 @@ class App extends Component {
                         closeWidget={this.closeWidget}
                         bringMenuToFront={this.bringMenuToFront}
                         authenticated={this.state.authenticated}
+                        scrollToTarget={this.scrollToTarget}
                         id={MAIN_MENU.replace(/\s/g, "")}
                     />
                     <Intro
@@ -125,11 +141,12 @@ class App extends Component {
                         order={orderOf(POLL_MENU)}
                         showing={showing(POLL_MENU)}
                         close={() => {this.closeWidget(POLL_MENU)}}
-                        showPoll={() => this.showWidget(SHOW_POLL)}
+                        showPoll={() => {this.showWidget(SHOW_POLL)}}
                         authenticated={this.state.authenticated}
                         username={this.state.username}
                         updateParentState={this.updateParentState}
                         needsUpdate={this.state.pollMenuNeedsUpdate}
+                        createNew={() => { this.showWidget(CREATE_NEW_POLL)}}
                         id={POLL_MENU.replace(/\s/g, "")}
                     />
                     <MyPolls
@@ -140,6 +157,7 @@ class App extends Component {
                         authenticated={this.state.authenticated}
                         username={this.state.username}
                         updateParentState={this.updateParentState}
+                        createNew={() => { this.showWidget(CREATE_NEW_POLL)}}
                         id={MY_POLLS.replace(/\s/g, "")}
                     />
                     <CreateNewPoll

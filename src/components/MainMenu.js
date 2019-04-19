@@ -17,14 +17,13 @@ class MainMenu extends Component {
                 textShadow: widgetShowing ? "0 0 2px gold" : "none",
                 cursor: "pointer"
             };
-            const toggleWidget = async () => {
-                await widgetShowing ?
-                    this.props.closeWidget(widget) :
-                    this.props.showWidget(widget);
+            const displayWidget = async () => {
+                await this.props.showWidget(widget);
                 this.props.bringMenuToFront();
+                this.props.scrollToTarget();
             };
             return (
-                <li key={widget} onClick={toggleWidget} style={liStyle}>{widget}</li>
+                <li key={widget} onClick={displayWidget} style={liStyle}>{widget}</li>
             );
         });
         return(
@@ -39,7 +38,7 @@ class MainMenu extends Component {
             <div id={this.props.id} className={"widget"} style={widgetStyle(this.props.order, this.props.showing)}>
                 <div className="scrollable">
                     <CloseWidgetBtn close={this.props.close}/>
-                    <h2>Main Menu</h2>
+                    <h2 id={'menuHeader'}>Main Menu</h2>
                     {this.options()}
                 </div>
             </div>
