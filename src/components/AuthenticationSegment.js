@@ -24,7 +24,7 @@ class AuthenticationSegment extends Component {
         return(
             <div className="authenticationLinks">
                 <p className="clickableText" onClick={this.props.showRegister}>Register</p>
-                <p> || </p>
+                <p id={'authSeperator'}> || </p>
                 <p className="clickableText" onClick={this.props.showLogin}>Log In</p>
             </div>
         );
