@@ -14,8 +14,8 @@ class Chart extends Component {
         });
         const chart = document.getElementById('donut_chart');
         if (chart) chart.innerHTML = "";
-        const width = 350;
-        const height = 250;
+        const width = window.innerWidth * 0.74 < 350 ? window.innerWidth * 0.74 : 350;
+        const height = width / 7 * 5;
         const margin = 40;
 
         // The radius of the pieplot is half the width or half the height (smallest one). I substract a bit of margin.
